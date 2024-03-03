@@ -1,4 +1,5 @@
-namespace Vendomat.Model;
+
+namespace Vendomat.Models;
 
 public interface ICurrencyReceiver
 {

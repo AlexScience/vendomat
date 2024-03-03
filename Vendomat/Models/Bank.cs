@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
+using Vendomat.Models;
 
-namespace Vendomat.Model;
+namespace Vendomat.Models;
 
 public class Bank
 {

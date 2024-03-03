@@ -1,4 +1,4 @@
-namespace Vendomat.Model;
+namespace Vendomat.Models;
 
 public sealed class Product
 {
