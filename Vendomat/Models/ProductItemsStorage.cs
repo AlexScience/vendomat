@@ -1,100 +1,42 @@
+using Vendomat.Exceptions;
+
 namespace Vendomat.Models;
 
-public class ProductItemsStorage
+public class ProductItemsStorage : IProductItemsStorage
 {
-    private Dictionary<char, List<Product>> _addresses;
-
-    public ProductItemsStorage()
+    private readonly Dictionary<ItemSlot, int> _availableItems = new()
     {
-        _addresses = new Dictionary<char, List<Product>>
-        {
-            {
-                'A', new(new List<Product>
-                {
-                    new Product(Guid.NewGuid(), "Baba", 3.44F),
-                    new Product(Guid.NewGuid(), "Gaba", 3.44F),
-                    new Product(Guid.NewGuid(), "Caba", 3.44F),
-                    new Product(Guid.NewGuid(), "Zaba", 3.44F),
-                    new Product(Guid.NewGuid(), "Xaba", 3.44F),
-                    new Product(Guid.NewGuid(), "Caba", 3.44F),
-                })
-            },
-            {
-                'B', new(new List<Product>
-                {
-                    new Product(Guid.NewGuid(), "B3aba", 3.44F),
-                    new Product(Guid.NewGuid(), "Ga4ba", 3.44F),
-                    new Product(Guid.NewGuid(), "Ca5ba", 3.44F),
-                    new Product(Guid.NewGuid(), "Za7ba", 3.44F),
-                    new Product(Guid.NewGuid(), "Xa9ba", 3.44F),
-                    new Product(Guid.NewGuid(), "Ca23ba", 3.44F),
-                })
-            },
-            {
-                'C', new(new List<Product>
-                {
-                    new Product(Guid.NewGuid(), "Ba232ba", 3.44F),
-                    new Product(Guid.NewGuid(), "G45aba", 3.44F),
-                    new Product(Guid.NewGuid(), "Ca678ba", 3.44F),
-                    new Product(Guid.NewGuid(), "Za54456a", 3.44F),
-                    new Product(Guid.NewGuid(), "Xa4564ba", 3.44F),
-                    new Product(Guid.NewGuid(), "Ca456423232ba", 3.44F),
-                })
-            },
-            {
-                'D', new(new List<Product>
-                {
-                    new Product(Guid.NewGuid(), "Bab1234454a", 3.44F),
-                    new Product(Guid.NewGuid(), "Ga537367ba", 3.44F),
-                    new Product(Guid.NewGuid(), "Ca635734ba", 3.44F),
-                    new Product(Guid.NewGuid(), "Z245762aba", 3.44F),
-                    new Product(Guid.NewGuid(), "Xab72a", 3.44F),
-                    new Product(Guid.NewGuid(), "Ca2457245ba", 3.44F),
-                })
-            },
-            {
-                'E', new(new List<Product>
-                {
-                    new Product(Guid.NewGuid(), "Baba245727", 3.44F),
-                    new Product(Guid.NewGuid(), "Ga27547257ba", 3.44F),
-                    new Product(Guid.NewGuid(), "C254727aba", 3.44F),
-                    new Product(Guid.NewGuid(), "Z27547aba", 3.44F),
-                    new Product(Guid.NewGuid(), "Xa2457ba", 3.44F),
-                    new Product(Guid.NewGuid(), "Ca2457ba", 3.44F),
-                })
-            },
-            {
-                'F', new(new List<Product>
-                {
-                    new Product(Guid.NewGuid(), "Ba524727ba", 3.44F),
-                    new Product(Guid.NewGuid(), "Gab724572a", 3.44F),
-                    new Product(Guid.NewGuid(), "Cab725472a", 3.44F),
-                    new Product(Guid.NewGuid(), "Zab45272457a", 3.44F),
-                    new Product(Guid.NewGuid(), "Xab254772a", 3.44F),
-                    new Product(Guid.NewGuid(), "Ca25472547ba", 3.44F),
-                })
-            },
-        };
+        { ItemSlot.FromRawString("A:1"), 6 },
+        { ItemSlot.FromRawString("A:2"), 6 },
+        { ItemSlot.FromRawString("B:1"), 6 },
+        { ItemSlot.FromRawString("B:2"), 6 }
+    };
+    
+    private readonly Dictionary<ItemSlot, Product> _productsMap = new()
+    {
+        { ItemSlot.FromRawString("A:1"), Product.Create("Snickers", 100) },
+        { ItemSlot.FromRawString("A:2"), Product.Create("Mars", 90) },
+        { ItemSlot.FromRawString("B:1"), Product.Create("Fanta", 150) },
+        { ItemSlot.FromRawString("B:2"), Product.Create("Pepsi", 160) }
+    };
+
+    public ProductInfo? GetItemInfo(ItemSlot slot)
+    {
+        if (!_availableItems.TryGetValue(slot, out var availableCount) || availableCount <= 0)
+            return null;
+
+        var product = _productsMap[slot];
+        return new ProductInfo(product, availableCount);
     }
-
-    public ProductItemsStorage(Dictionary<char, List<Product>> slotsMap)
+    
+    public Product GetItem(ItemSlot slot)
     {
-        _addresses = slotsMap;
-    }
+        if (!_availableItems.TryGetValue(slot, out var availableCount) || availableCount <= 0)
+            throw new ProductNotAvailableException();
 
-    public Product GetItem(char row, int index)
-    {
-        if (_addresses.ContainsKey(row))
-        {
-            var slot = _addresses[row];
-            var element = slot[index];
-            return element;
-        }
-        else
-        {
-            Console.WriteLine("error");
-        }
+        var product = _productsMap[slot];
+        _availableItems[slot]--;
 
-        return null;
+        return product;
     }
 }
