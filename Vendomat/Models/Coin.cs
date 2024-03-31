@@ -1,5 +1,3 @@
-using Vendomat.Models;
-
 namespace Vendomat.Models;
 
 public class Coin : Currency

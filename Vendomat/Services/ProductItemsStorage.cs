@@ -1,6 +1,8 @@
 using Vendomat.Exceptions;
+using Vendomat.Models;
+using Vendomat.Services.DTO;
 
-namespace Vendomat.Models;
+namespace Vendomat.Services;
 
 public class ProductItemsStorage : IProductItemsStorage
 {

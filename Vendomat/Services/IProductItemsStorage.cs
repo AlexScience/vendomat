@@ -1,4 +1,7 @@
-namespace Vendomat.Models;
+using Vendomat.Models;
+using Vendomat.Services.DTO;
+
+namespace Vendomat.Services;
 
 public interface IProductItemsStorage
 {

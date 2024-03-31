@@ -1,6 +1,3 @@
-using System.Collections.ObjectModel;
-using Vendomat.Models;
-
 namespace Vendomat.Models;
 
 public class Bank

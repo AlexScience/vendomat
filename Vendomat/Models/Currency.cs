@@ -11,12 +11,6 @@ public abstract class Currency
         Nominal = nominal;
     }
 
-    public enum CurrencyType
-    {
-        Coin = 0,
-        Banknote = 1
-    }
-
     public override string ToString()
     {
         return $"Currency type: {Type} | Nominal: {Nominal}";

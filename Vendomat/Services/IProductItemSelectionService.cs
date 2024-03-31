@@ -1,4 +1,4 @@
-namespace Vendomat.Models;
+namespace Vendomat.Services;
 
 public interface IProductItemSelectionService
 {
