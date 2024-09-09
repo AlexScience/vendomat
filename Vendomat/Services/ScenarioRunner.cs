@@ -16,15 +16,26 @@ public class ScenarioRunner : IScenarioRunner
                     new CheckProductAvailabilityStep(),
                     new CheckBalanceStep(),
                 };
-                new SelectItemScenario(steps).Run(new );
-                
+            
+                // Создание контекста для сценария SelectItemScenario
+                var context = new SelectItemScenarioContext();
+            
+                // Передача контекста в метод Run
+                new SelectItemScenario(steps).Run(context);
                 break;
+            
             case UserScenario.SelectItem:
+                Console.WriteLine("Выбран товар.");
                 break;
+            
             case UserScenario.AddCoin:
+                Console.WriteLine("Добавлена монета.");
                 break;
+            
             case UserScenario.AddBanknote:
+                Console.WriteLine("Добавлена банкнота.");
                 break;
+            
             default:
                 throw new InvalidOperationException("Неизвестный сценарий");
         }
