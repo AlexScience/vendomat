@@ -1,6 +1,3 @@
-Вот пример README для вашего проекта **Vendomat**:
-
----
 
 # Vendomat
 
